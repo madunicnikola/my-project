@@ -58,12 +58,3 @@ services:
     App\Command\:
         resource: '../src/Command/*'
         tags: [ 'console.command' ]
-
-
-
-    Elements\Bundle\ProcessManagerBundle\Service\CommandsValidator:
-        public: true
-        arguments:
-            $strategy: "all"
-            $whiteList: []
-            $blackList: []
