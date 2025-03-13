@@ -1,0 +1,26 @@
+pimcore:
+    assets:
+        image:
+            thumbnails:
+                definitions:
+                    default:
+                        items:
+                            -
+                                method: resize
+                                arguments:
+                                    width: 320
+                                    height: 320
+                        medias: {  }
+                        name: default
+                        description: ''
+                        group: ''
+                        format: SOURCE
+                        quality: 100
+                        highResolution: 2.0
+                        preserveColor: true
+                        preserveMetaData: false
+                        rasterizeSVG: false
+                        downloadable: false
+                        modificationDate: 1741726620
+                        creationDate: 1741613534
+                        preserveAnimation: false

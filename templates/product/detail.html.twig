@@ -1,0 +1,90 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+<div class="product-detail-container">
+    <div class="product-detail">
+        <div class="product-gallery">
+            {% for program in product.programItem %}
+                {% if program.programImages %}
+                    {% set imageAsset = pimcore_asset(program.programImages.data.id) %}
+                    <img src="{{ imageAsset.getThumbnail('default') }}" alt="{{ product.name }}" class="gallery-image">
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <div class="product-content">
+            <h1 class="product-title">{{ product.name }}</h1>
+            <p class="product-price">${{ product.price }}</p>
+            <p class="product-description">{{ product.description|raw }}</p>
+
+            <div class="product-meta">
+                <p><strong>SKU:</strong> {{ product.sku }}</p>
+                <p><strong>Dimensions:</strong> {{ product.technicalAttributes.getLocalizedKeyValue(6, 6, 'default') }} x {{ product.technicalAttributes.getLocalizedKeyValue(6, 7, 'default') }}</p>
+                <p><strong>Stock:</strong> {{ product.stock }}</p>
+                <p><strong>Status:</strong> {{ product.status }}</p>
+                <div class="product-brand">
+                    <h2 class="section-title">Brand</h2>
+                    <p>{{ product.brand.getName() }}</p>
+                </div>
+            </div>
+
+            <div class="product-categories">
+                <h2>Categories</h2>
+                <ul>
+                    {% for category in product.categories %}
+                        <li>{{ category.getKey() }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            {% if product.programItem is not empty %}
+            <h2 class="program-items-header">Program Items</h2>
+                <div class="program-items">
+                    {% for program in product.programItem %}
+                        {% set localizedData = program.localizedfields.getData() %}
+                            <div class="program-items-text">
+                                <h3>{{ localizedData.getLocalizedValue('programTitle', 'en') }}</h3>
+                                <p><i>Transport Info:</i> <ul><li> <b>{{ localizedData.getLocalizedValue('programTransportInfo', 'en') }}</b></li></ul></p>
+                                <ul>
+                                    <li>{{ localizedData.getLocalizedValue('programDescription', 'en')|raw }}</li>
+                                    <li>{{ localizedData.getLocalizedValue('programDescriptionCatalog', 'en')|raw }}</li>
+                                </ul>
+                            </div>
+                            <div class="program-items-image">    
+                                {% if program.programImages %}
+                                    {% set imageAsset = pimcore_asset(program.programImages.data.id) %}
+                                    {% if imageAsset %}
+                                        <img src="{{ imageAsset.getThumbnail('default').getPath() }}" alt="{{ localizedData.getLocalizedValue('programTitle', 'en') }}" class="program-items-img">
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="product-contact">
+                <h2>Contact Info</h2>
+                {% for contact in product.contacts %}
+                    <p><strong>Email:</strong> {{ contact.email }}</p>
+                    <p><strong>Phone:</strong> {{ contact.phone }}</p>
+                    <p><strong>Fax:</strong> {{ contact.fax }}</p>
+                    <p><strong>Contact Type:</strong> {{ contact.contactType }}</p>
+                    {% if contact.website %}
+                        {% set websiteUrl = contact.website.getPath() %}
+                        {% if websiteUrl starts with 'https' %}
+                            {% set fullUrl = websiteUrl %}
+                        {% else %}
+                            {% set fullUrl = 'https://' ~ websiteUrl %}
+                        {% endif %}
+                        {# Display only the URL without protocol #}
+                        {% set displayUrl = websiteUrl|replace({'https://': '', 'https://': ''}) %}
+                        <p><strong>Website:</strong> <a href="{{ fullUrl }}" target="_blank">{{ displayUrl }}</a></p>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <a href="{{ path('product_list') }}" class="back-link">← Back to Products</a>
+</div>
+{% endblock %}

@@ -1,11 +1,6 @@
 parameters:
     secret: 8ghChso+HNQZ/QeLr0TTsSeKKewmODdyVITWATbSZjk=
 
-    # customize the full path to external executables
-    # normally they are auto-detected by `which program` or auto-discovered in the configured path in
-    # System Settings -> General -> Additional $PATH variable
-    # but in general it's a good idea to have your programs in your $PATH environment variable (system wide)
-
     #pimcore_executable_composer: php /opt/vendor/bin/composer.phar
     #pimcore_executable_html2text: /usr/local/html2text/bin/html2text
     #pimcore_executable_soffice: /opt/libreoffice/bin/soffice
@@ -30,20 +25,14 @@ parameters:
     #pimcore_executable_dot: /usr/bin/dot
 
 services:
-    # default configuration for services in *this* file
     _defaults:
-        # automatically injects dependencies in your services
         autowire: true
-        # automatically registers your services as commands, event subscribers, etc.
         autoconfigure: true
-        # this means you cannot fetch services directly from the container via $container->get()
-        # if you need to do this, you can override this setting on individual services
         public: false
     #
     # CONTROLLERS
     #
 
-    # auto-register all controllers as services
     App\Controller\:
         resource: '../src/Controller'
         public: true
@@ -54,7 +43,13 @@ services:
     # COMMANDS
     #
 
-    # auto-register all commands as services
     App\Command\:
         resource: '../src/Command/*'
         tags: [ 'console.command' ]
+
+    App\Service\OpenSearchService:
+        arguments:
+            $openSearchHost: '%env(OPENSEARCH_HOST)%'
+            $openSearchPort: '%env(OPENSEARCH_PORT)%'
+            $openSearchIndex: '%env(OPENSEARCH_INDEX)%'
+            $logger: '@logger'

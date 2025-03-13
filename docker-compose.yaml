@@ -8,6 +8,18 @@ services:
         volumes:
             - pimcore-rabbitmq:/var/lib/rabbitmq/
 
+    opensearch:
+        image: opensearchproject/opensearch:2.19.1
+        environment:
+            - discovery.type=single-node
+            - bootstrap.memory_lock=true
+            - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
+            - "DISABLE_SECURITY_PLUGIN=true" 
+        ports:
+            - "9200:9200"
+        networks:
+            - default
+
     db:
         image: mariadb:10.11
         working_dir: /application

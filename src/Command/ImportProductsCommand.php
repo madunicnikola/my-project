@@ -18,10 +18,22 @@ use Pimcore\Model\Asset;
 use Pimcore\Model\DataObject\Data\QuantityValue;
 use Pimcore\Model\DataObject\Fieldcollection;
 use Pimcore\Model\DataObject\Data\Link;
+use Pimcore\Model\DataObject\Data\BlockElement;
+use Pimcore\Model\DataObject\Localizedfield;
+use Pimcore\Model\Asset\Image;
+use App\Service\OpenSearchService;
 
 class ImportProductsCommand extends AbstractCommand
 {
     use ExecutionTrait;
+
+    private OpenSearchService $openSearchService;
+    
+    public function __construct(OpenSearchService $openSearchService)
+    {
+        $this->openSearchService = $openSearchService;
+        parent::__construct();
+    }
 
     protected function configure()
     {
@@ -57,6 +69,7 @@ class ImportProductsCommand extends AbstractCommand
                 $brand               = $sheet->getCell('I' . $row)->getValue();
                 $technicalAttributes = $sheet->getCell('J' . $row)->getValue();
                 $contactString       = $sheet->getCell('K' . $row)->getValue();
+                $programDataString   = $sheet->getCell('L' . $row)->getValue();
 
                 if (!$sku) {
                     $this->dump("Row $row: Missing SKU, skipping...");
@@ -138,8 +151,45 @@ class ImportProductsCommand extends AbstractCommand
                 $contactItem->setFax($contactParts[2] ?? '');
                 $contactItem->setWebsite($linkObj);
                 $contactItem->setContactType($contactParts[4] ?? '');
-
                 $contactsCollection->add($contactItem);
+
+                $programParts = array_map('trim', explode('|', $programDataString));
+                $locale = 'en';
+
+                $programImageAsset = null;
+                if (!empty($programParts[4])) {
+                    $programImagePath = '/' . ltrim($programParts[4], '/');
+                    $programImageAsset = Asset::getByPath($programImagePath);
+                }
+                $localizedData = [
+                    $locale => [
+                        "programTitle" => $programParts[0] ?? '',
+                        "programTransportInfo" => $programParts[1] ?? '',
+                        "programDescription" => $programParts[2] ?? '',
+                        "programDescriptionCatalog" => $programParts[3] ?? '',
+                    ]
+                ];
+
+                $localizedBlockElement = new BlockElement(
+                    'localizedfields',
+                    'localizedfields',
+                    new Localizedfield($localizedData)
+                );
+
+                $programImageElement = new BlockElement(
+                    'programImages',
+                    'image',
+                    $programImageAsset instanceof Image 
+                        ? $programImageAsset
+                        : null
+                );
+
+                $blockData = [
+                    "localizedfields" => $localizedBlockElement,
+                    "programImages"   => $programImageElement
+                ];
+
+                $this->dump("Program block data: ", $blockData);
 
                 $product->setName($name);
                 $product->setDescription($description);
@@ -150,6 +200,7 @@ class ImportProductsCommand extends AbstractCommand
                 $product->setBrand($brandObj);
                 $product->setTechnicalAttributes($store);
                 $product->setContacts($contactsCollection);
+                $product->setProgramItem([$blockData]);
 
                 if ($imagePath) {
                     $asset = Asset::getByPath('/' . ltrim($imagePath, '/'));
@@ -183,8 +234,22 @@ class ImportProductsCommand extends AbstractCommand
 
                 $product->setCategories($catObjects);
 
+                $categoryNamesList = [];
+                foreach ($catObjects as $catObj) {
+                    $categoryNamesList[] = $catObj->getKey();
+                }
+                $product->setCategoryNames($categoryNamesList);
+
                 $product->setPublished(true);
                 $product->save();
+                
+                $indexed = $this->openSearchService->indexProduct($product);
+                if ($indexed) {
+                    $this->dump("Row $row: SKU=$sku => Indexed in OpenSearch");
+                } else {
+                    $this->dump("Row $row: SKU=$sku => Failed to index in OpenSearch");
+                }
+                
                 $this->dump("Row $row: SKU=$sku => Imported/Updated with categories: " . $categoriesCsv);
             }
         } catch (\Exception $e) {

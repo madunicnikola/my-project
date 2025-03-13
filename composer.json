@@ -7,13 +7,16 @@
     "sort-packages": true,
     "process-timeout": 0,
     "allow-plugins": {
-      "symfony/runtime": true
+      "symfony/runtime": true,
+      "php-http/discovery": true
     }
   },
   "prefer-stable": true,
   "require": {
     "elements/process-manager-bundle": "^5.0",
+    "opensearch-project/opensearch-php": "^2.4",
     "pimcore/admin-ui-classic-bundle": "*",
+    "pimcore/opensearch-client": "^1.1",
     "pimcore/pimcore": "*",
     "pimcore/platform-version": "^2024.4",
     "pimcore/quill-bundle": "*",
