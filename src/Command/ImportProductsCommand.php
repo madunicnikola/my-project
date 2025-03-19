@@ -116,7 +116,7 @@ class ImportProductsCommand extends AbstractCommand
 
                 $store->setValue('width',  $widthValue);
                 $store->setValue('height', $heightValue);
-                $store->setActiveGroups([6 => true]);
+                $store->setActiveGroups([1 => true]);
 
                 $brandObj = Brand::getByPath('/Brands/' . $brand);
                 if (!$brandObj instanceof Brand) {

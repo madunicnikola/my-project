@@ -30,7 +30,7 @@ class ReindexProductsCommand extends AbstractCommand
         
         $count = $this->openSearchService->reindexAllProducts();
         
-        $output->writeln("Successfully reindexed $count products.");
+        $output->writeln("Successfully reindexed $count products using both Ecommerce Framework and direct OpenSearch.");
         return self::SUCCESS;
     }
 }

@@ -6,6 +6,9 @@ use OpenSearch\Client;
 use OpenSearch\ClientBuilder;
 use Pimcore\Model\DataObject\Product;
 use Psr\Log\LoggerInterface;
+use App\Ecommerce\ProductDecorator;
+use Pimcore\Bundle\EcommerceFrameworkBundle\Factory;
+use Pimcore\Model\DataObject\Product\Listing;
 
 class OpenSearchService
 {
@@ -98,14 +101,40 @@ class OpenSearchService
     public function indexProduct(Product $product): bool
     {
         try {
+            // First try to use the ecommerce framework for indexing
+            try {
+                $indexService = Factory::getInstance()->getIndexService();
+                $decorator = new ProductDecorator($product);
+                $indexService->updateIndex($decorator);
+                
+                $this->logger->info("Indexed product via Ecommerce Framework", [
+                    'sku' => $product->getSku(),
+                    'id' => $product->getId()
+                ]);
+                
+                return true;
+            } catch (\Exception $e) {
+                // Fall back to direct OpenSearch indexing if ecommerce framework fails
+                $this->logger->warning("Ecommerce Framework indexing failed, falling back to direct indexing: " . $e->getMessage());
+            }
+            
+            // Original direct indexing code
             $width = null;
             $height = null;
             
             try {
                 if ($product->getTechnicalAttributes()) {
                     $store = $product->getTechnicalAttributes();
+                    $widthValue = $store->getValue('width');
+                    $heightValue = $store->getValue('height');
                     
-                    $this->logger->info('Technical attributes are being skipped temporarily');
+                    if ($widthValue) {
+                        $width = $widthValue->getValue();
+                    }
+                    
+                    if ($heightValue) {
+                        $height = $heightValue->getValue();
+                    }
                 }
             } catch (\Exception $e) {
                 $this->logger->warning('Error processing technical attributes: ' . $e->getMessage());
@@ -189,7 +218,7 @@ class OpenSearchService
                 'body' => $document
             ]);
             
-            $this->logger->info("Indexed product", [
+            $this->logger->info("Indexed product directly", [
                 'sku' => $product->getSku(),
                 'id' => $product->getId()
             ]);
@@ -382,18 +411,25 @@ class OpenSearchService
     
     public function reindexAllProducts(): int
     {
-        $productList = new Product\Listing();
-        $productList->setCondition('published = 1');
+        $count = 0;
         
-        $successCount = 0;
+        $listing = new Listing();
+        $listing->setCondition("published = 1");
+        $listing->setObjectTypes([Product::OBJECT_TYPE_OBJECT]);
         
-        foreach ($productList as $product) {
-            if ($this->indexProduct($product)) {
-                $successCount++;
+        foreach ($listing as $product) {
+            try {
+                if ($this->indexProduct($product)) {
+                    $count++;
+                }
+            } catch (\Exception $e) {
+                $this->logger->error('Error reindexing product: ' . $e->getMessage(), [
+                    'sku' => $product->getSku()
+                ]);
             }
         }
         
-        return $successCount;
+        return $count;
     }
     
     public function getClient(): Client
@@ -404,5 +440,25 @@ class OpenSearchService
     public function getIndexName(): string
     {
         return $this->indexName;
+    }
+
+    /**
+     * Gets the product list from the ecommerce framework
+     * 
+     * @return mixed
+     */
+    public function getProductList()
+    {
+        return Factory::getInstance()->getIndexService()->getProductListForTenant('default');
+    }
+    
+    /**
+     * Gets the filter service from the ecommerce framework
+     * 
+     * @return mixed
+     */
+    public function getFilterService()
+    {
+        return Factory::getInstance()->getFilterService();
     }
 }

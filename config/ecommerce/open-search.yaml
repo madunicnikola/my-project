@@ -1,0 +1,49 @@
+pimcore_ecommerce_framework:
+    index_service:
+        default_tenant: OpenSearch
+        tenants:
+            OpenSearch:
+                enabled: true
+                worker_id: Pimcore\Bundle\EcommerceFrameworkBundle\IndexService\Worker\OpenSearch\DefaultOpenSearch
+                config_id: Pimcore\Bundle\EcommerceFrameworkBundle\IndexService\Config\OpenSearch
+                config_options:
+                    opensearch_client_name: 'default'
+                    client_config:
+                        indexName: '%env(OPENSEARCH_INDEX)%'
+                        logging: true
+                    index_settings:
+                        number_of_shards: 1
+                        number_of_replicas: 1
+                search_attributes:
+                    - name^3
+                    - description
+                    - sku
+                    - brandName
+                    - categoryNames
+                attributes:
+                    id:
+                        type: integer
+                        filter_group: string
+                    sku:
+                        type: keyword
+                        filter_group: string
+                    name:
+                        type: text
+                        filter_group: string
+                    description:
+                        type: text
+                    price:
+                        type: double
+                        filter_group: number
+                    stock:
+                        type: integer
+                        filter_group: number
+                    status:
+                        type: keyword
+                        filter_group: string
+                    categoryNames:
+                        type: keyword
+                        filter_group: multiselect
+                    brandName:
+                        type: keyword
+                        filter_group: string
