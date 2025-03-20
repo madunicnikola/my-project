@@ -31,22 +31,18 @@ class SeoListener implements EventSubscriberInterface
             return;
         }
 
-        // Debug the actual methods available
         $this->debugAvailableMethods();
     }
 
     private function debugAvailableMethods(): void
     {
-        // Get all methods of the seoManager
         $methods = get_class_methods($this->seoManager);
         
-        // Log or dump available methods
         error_log('Available methods in ElementMetaDataManager:');
         foreach ($methods as $method) {
             error_log(" - $method");
         }
 
-        // If you want to see the full class details
         try {
             $reflection = new \ReflectionClass($this->seoManager);
             $properties = $reflection->getProperties();

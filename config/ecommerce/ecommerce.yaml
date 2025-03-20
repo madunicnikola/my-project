@@ -1,5 +1,3 @@
-# config/ecommerce/ecommerce.yaml
-
 pimcore_ecommerce_framework:
     index_service:
         tenants:
@@ -7,12 +5,10 @@ pimcore_ecommerce_framework:
                 worker_id: Pimcore\Bundle\EcommerceFrameworkBundle\IndexService\Worker\DefaultMysql
                 config_id: Pimcore\Bundle\EcommerceFrameworkBundle\IndexService\Config\DefaultMysql
 
-                # 1) Tell the tenant which classes to index
                 config_options:
                     class_definitions:
                         - { className: 'Pimcore\\Model\\DataObject\\Product' }
 
-                # 2) MySQL-friendly attribute definitions
                 attributes:
                     id:
                         type: int

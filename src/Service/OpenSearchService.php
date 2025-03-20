@@ -101,7 +101,6 @@ class OpenSearchService
     public function indexProduct(Product $product): bool
     {
         try {
-            // First try to use the ecommerce framework for indexing
             try {
                 $indexService = Factory::getInstance()->getIndexService();
                 $decorator = new ProductDecorator($product);
@@ -114,11 +113,9 @@ class OpenSearchService
                 
                 return true;
             } catch (\Exception $e) {
-                // Fall back to direct OpenSearch indexing if ecommerce framework fails
                 $this->logger->warning("Ecommerce Framework indexing failed, falling back to direct indexing: " . $e->getMessage());
             }
             
-            // Original direct indexing code
             $width = null;
             $height = null;
             

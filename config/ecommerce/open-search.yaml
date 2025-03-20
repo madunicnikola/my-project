@@ -46,4 +46,8 @@ pimcore_ecommerce_framework:
                         filter_group: multiselect
                     brandName:
                         type: keyword
-                        filter_group: string
+                        filter_group: relation
+                        interpreter_id: Pimcore\Bundle\EcommerceFrameworkBundle\IndexService\Interpreter\ObjectValue
+                        interpreter_options:
+                            target:
+                                fieldname: name
