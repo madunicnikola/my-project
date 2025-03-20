@@ -53,11 +53,6 @@ services:
             $openSearchPort: '%env(OPENSEARCH_PORT)%'
             $openSearchIndex: '%env(OPENSEARCH_INDEX)%'
             $logger: '@logger'
-    
-    App\Command\CheckOpenSearchCommand:
-        arguments:
-            $openSearchClient: '@pimcore.open_search_client.default'
-        tags: ['console.command']
 
     App\EventListener\SeoListener:
         tags:
