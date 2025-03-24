@@ -1,6 +1,5 @@
 pimcore_ecommerce_framework:
     index_service:
-        default_tenant: OpenSearch
         tenants:
             OpenSearch:
                 enabled: true
@@ -11,6 +10,12 @@ pimcore_ecommerce_framework:
                     client_config:
                         indexName: '%env(OPENSEARCH_INDEX)%'
                         logging: true
+                        host: 'opensearch'  # Changed from default 'localhost'
+                        port: 9200
+                        scheme: 'https'     # Added scheme since you're using HTTPS
+                        username: '%env(OPENSEARCH_USERNAME)%'
+                        password: '%env(OPENSEARCH_PASSWORD)%'
+                        ssl_verification: false  # Disable SSL verification for self-signed certs
                     index_settings:
                         number_of_shards: 1
                         number_of_replicas: 1

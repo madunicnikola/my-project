@@ -9,6 +9,7 @@
  * - description [wysiwyg]
  * - sku [input]
  * - status [select]
+ * - isActive [checkbox]
  * - image [image]
  * - price [numeric]
  * - stock [numeric]
@@ -33,10 +34,10 @@ return \Pimcore\Model\DataObject\ClassDefinition::__set_state(array(
    'title' => '',
    'description' => '',
    'creationDate' => NULL,
-   'modificationDate' => 1741862028,
+   'modificationDate' => 1742464016,
    'userOwner' => 2,
    'userModification' => 2,
-   'parentClass' => '',
+   'parentClass' => '\\Pimcore\\Bundle\\EcommerceFrameworkBundle\\Model\\AbstractProduct',
    'implementsInterfaces' => '',
    'listingParentClass' => '',
    'useTraits' => '',
@@ -215,6 +216,28 @@ return \Pimcore\Model\DataObject\ClassDefinition::__set_state(array(
                  'optionsProviderType' => 'configure',
                  'optionsProviderClass' => '',
                  'optionsProviderData' => '',
+              )),
+              4 => 
+              \Pimcore\Model\DataObject\ClassDefinition\Data\Checkbox::__set_state(array(
+                 'name' => 'isActive',
+                 'title' => 'Is Active',
+                 'tooltip' => '',
+                 'mandatory' => false,
+                 'noteditable' => false,
+                 'index' => false,
+                 'locked' => false,
+                 'style' => '',
+                 'permissions' => NULL,
+                 'fieldtype' => '',
+                 'relationType' => false,
+                 'invisible' => false,
+                 'visibleGridView' => false,
+                 'visibleSearch' => false,
+                 'blockedVarsForExport' => 
+                array (
+                ),
+                 'defaultValue' => NULL,
+                 'defaultValueGenerator' => '',
               )),
             ),
              'locked' => false,

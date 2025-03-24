@@ -1,6 +1,0 @@
-pimcore_open_search_client:
-    clients:
-      default: 
-        hosts: ['host.docker.internal:9200']
-        username: '%env(OPENSEARCH_USERNAME)%'
-        password: '%env(OPENSEARCH_PASSWORD)%'

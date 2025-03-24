@@ -21,17 +21,17 @@ use Pimcore\Model\DataObject\Data\Link;
 use Pimcore\Model\DataObject\Data\BlockElement;
 use Pimcore\Model\DataObject\Localizedfield;
 use Pimcore\Model\Asset\Image;
-use App\Service\OpenSearchService;
+use OpenSearch\Client;
 
 class ImportProductsCommand extends AbstractCommand
 {
     use ExecutionTrait;
 
-    private OpenSearchService $openSearchService;
+    private Client $openSearchClient;
     
-    public function __construct(OpenSearchService $openSearchService)
+    public function __construct(Client $openSearchClient)
     {
-        $this->openSearchService = $openSearchService;
+        $this->openSearchClient = $openSearchClient;
         parent::__construct();
     }
 
@@ -243,7 +243,8 @@ class ImportProductsCommand extends AbstractCommand
                 $product->setPublished(true);
                 $product->save();
                 
-                $indexed = $this->openSearchService->indexProduct($product);
+                // Index product in OpenSearch
+                $indexed = $this->indexProductToOpenSearch($product);
                 if ($indexed) {
                     $this->dump("Row $row: SKU=$sku => Indexed in OpenSearch");
                 } else {
@@ -259,5 +260,77 @@ class ImportProductsCommand extends AbstractCommand
 
         $this->dump('Product import completed.');
         return self::SUCCESS;
+    }
+
+    /**
+     * Index a product to OpenSearch
+     * 
+     * @param Product $product
+     * @return bool
+     */
+    private function indexProductToOpenSearch(Product $product): bool
+    {
+        try {
+            $indexName = $_ENV['OPENSEARCH_INDEX'] ?? 'products';
+            
+            // Extract relevant data from the product
+            $productData = [
+                'id' => $product->getId(),
+                'sku' => $product->getSku(),
+                'name' => $product->getName(),
+                'description' => $product->getDescription(),
+                'price' => $product->getPrice(),
+                'stock' => $product->getStock(),
+                'status' => $product->getStatus(),
+                'created_at' => $product->getCreationDate(),
+                'updated_at' => $product->getModificationDate()
+            ];
+            
+            // Add categories if available
+            $categories = $product->getCategories();
+            if (!empty($categories)) {
+                $categoryData = [];
+                foreach ($categories as $category) {
+                    $categoryData[] = [
+                        'id' => $category->getId(),
+                        'name' => $category->getKey()
+                    ];
+                }
+                $productData['categories'] = $categoryData;
+            }
+            
+            // Add brand if available
+            $brand = $product->getBrand();
+            if ($brand) {
+                $productData['brand'] = [
+                    'id' => $brand->getId(),
+                    'name' => $brand->getName()
+                ];
+            }
+            
+            // Add image info if available
+            $image = $product->getImage();
+            if ($image) {
+                $productData['image'] = [
+                    'id' => $image->getId(),
+                    'path' => $image->getFullPath()
+                ];
+            }
+            
+            // Prepare the index request
+            $params = [
+                'index' => $indexName,
+                'id' => (string)$product->getId(),
+                'body' => $productData
+            ];
+            
+            // Execute the index request
+            $response = $this->openSearchClient->index($params);
+            
+            return isset($response['result']) && ($response['result'] === 'created' || $response['result'] === 'updated');
+        } catch (\Exception $e) {
+            $this->dump("OpenSearch indexing error: " . $e->getMessage());
+            return false;
+        }
     }
 }

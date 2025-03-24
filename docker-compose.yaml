@@ -1,32 +1,43 @@
 services:
     redis:
         image: redis:alpine
+        container_name: redis
         command: [ redis-server, --maxmemory 128mb, --maxmemory-policy volatile-lru, --save "" ]
 
     rabbitmq:
         image: rabbitmq:alpine
+        container_name: rabbitmq
         volumes:
             - pimcore-rabbitmq:/var/lib/rabbitmq/
 
     opensearch:
-        image: opensearchproject/opensearch:2.7.0
+        image: opensearchproject/opensearch:latest
         container_name: opensearch
         environment:
             - discovery.type=single-node
-            - OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m
-            - plugins.security.disabled=true
+            - bootstrap.memory_lock=true
+            - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
+            - OPENSEARCH_INITIAL_ADMIN_PASSWORD=${OPENSEARCH_INITIAL_ADMIN_PASSWORD}
         ports:
-        - "9200:9200"
-        - "9600:9600"
-        ulimits:
-            memlock:
-                soft: -1
-                hard: -1
+            - "9200:9200"
         networks:
-        - default
+            default:
+                aliases:
+                    - localhost
+
+    opensearch-dashboards:
+        image: opensearchproject/opensearch-dashboards:latest
+        container_name: opensearch-dashboards
+        ports:
+            - 5601:5601
+        expose:
+            - "5601"
+        environment:
+            OPENSEARCH_HOSTS: '["https://opensearch:9200"]'
 
     db:
         image: mariadb:10.11
+        container_name: mariadb
         working_dir: /application
         command: [ mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_general_ci, --innodb-file-per-table=1 ]
         volumes:
@@ -45,6 +56,7 @@ services:
 
     nginx:
         image: nginx:stable-alpine
+        container_name: nginx
         ports:
             - "80:80"
         volumes:
@@ -54,18 +66,21 @@ services:
             - php
 
     php:
-        user: '1001:1001' # set to your uid:gid
+        user: '1001:1001'
         image: pimcore/pimcore:php8.3-debug-latest
+        container_name: php
         environment:
             COMPOSER_HOME: /var/www/html
             PHP_IDE_CONFIG: serverName=localhost
-            # Feed installer configuration via ENV variables.
-            # See: https://pimcore.com/docs/pimcore/current/Development_Documentation/Getting_Started/Advanced_Installation_Topics.html#page_Advanced-Installation-Topics
             PIMCORE_INSTALL_MYSQL_USERNAME: pimcore
             PIMCORE_INSTALL_MYSQL_PASSWORD: pimcore
             PIMCORE_INSTALL_MYSQL_PORT: 3306
             PIMCORE_INSTALL_MYSQL_HOST_SOCKET: db
             PIMCORE_INSTALL_MYSQL_DATABASE: pimcore
+            OPENSEARCH_URL: "https://opensearch:9200"
+            OPENSEARCH_USERNAME: "admin"
+            OPENSEARCH_PASSWORD: "YouongPrStrassword123!"
+            OPENSEARCH_SSL_VERIFICATIONMODE: "none"
         depends_on:
             db:
                 condition: service_healthy
@@ -74,21 +89,24 @@ services:
             - ./.docker/messenger.yaml:/var/www/html/config/packages/messenger.yaml:ro
 
     supervisord:
-        user: '1001:1001' # set to your uid:gid
+        user: '1001:1001'
         image: pimcore/pimcore:php8.3-supervisord-latest
+        container_name: php-supervisor
         depends_on:
             rabbitmq:
                 condition: service_started
             db:
                 condition: service_healthy
+        environment:
+            OPENSEARCH_URL: "https://opensearch:9200"
+            OPENSEARCH_USERNAME: "admin"
+            OPENSEARCH_PASSWORD: "YouongPrStrassword123!"
+            OPENSEARCH_SSL_VERIFICATIONMODE: "none"
         volumes:
             - .:/var/www/html
             - ./.docker/messenger.yaml:/var/www/html/config/packages/messenger.yaml:ro
             - ./.docker/supervisord.conf:/etc/supervisor/conf.d/pimcore.conf:ro
 
-    # The following two services are used for testing.
-    # We restrict these services to the test profile only, so we don't spin them up with every `docker compose up`.
-    # See: https://docs.docker.com/compose/profiles/
     test-db:
         profiles: [ 'test' ]
         extends: db
