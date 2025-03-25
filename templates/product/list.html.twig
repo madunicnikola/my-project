@@ -7,44 +7,22 @@
     <div class="product-layout">
         <aside class="filter-sidebar">
             <h2>Filters</h2>
-            <form method="get" action="{{ path('product_list') }}" class="filter-form">
-                <div class="filter-group">
-                    <label for="category">Category</label>
-                    <select name="category" id="category">
-                        <option value="">All Categories</option>
-                        {% for category in categories %}
-                            <option value="{{ category }}" {{ filters.category == category ? 'selected' : '' }}>
-                                {{ category }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div class="filter-group">
-                    <label for="minPrice">Min Price</label>
-                    <input type="number" name="minPrice" id="minPrice" placeholder="Min Price" value="{{ filters.minPrice }}">
-                </div>
-                <div class="filter-group">
-                    <label for="maxPrice">Max Price</label>
-                    <input type="number" name="maxPrice" id="maxPrice" placeholder="Max Price" value="{{ filters.maxPrice }}">
-                </div>
-
-                <button type="submit" class="filter-button">Apply Filters</button>
-            </form>
-        </aside>
-        <aside>
-            <form method="get" action="{{ path('product_search') }}" class="search-form">
-                <input type="text" name="q" placeholder="Search products..." value="{{ searchTerm|default('') }}" autocomplete="off">
-                <button type="submit">Search</button>
-            </form>
+            {% if filterDefinition.filters is defined and filterDefinition.filters|length > 0 %}
+                <form method="get" action="">
+                    {% for filter in filterDefinition.filters %}
+                        {{ filterService.filterFrontend(filter, productListing, currentFilter) | raw }}
+                    {% endfor %}
+                    <button type="submit" class="form-button">Apply Filters</button>
+                </form>
+            {% endif %}
         </aside>
         <section class="product-grid">
             {% for product in products %}
                 <div class="product-card">
                     <a href="{{ path('product_detail', { sku: product.sku }) }}" class="product-link">
-                        {% for category in product.categories %}
+                        {% for categoryName in product.categoryNames %}
                             <div class="product-category-tag">
-                                <p>{{ category.getKey() }}</p>
+                                <p>{{ categoryName }}</p>
                             </div>
                         {% endfor %}
                         <div class="product-image">
@@ -64,13 +42,12 @@
     </div>
 
     <div class="pagination">
-        {% set totalPages = (totalCount / limit)|round(0, 'ceil') %}
-        {% if page > 1 %}
-            <a href="{{ path('product_list', { page: page - 1, category: filters.category, minPrice: filters.minPrice, maxPrice: filters.maxPrice }) }}" class="pagination-link">Previous</a>
+        Page {{ products.currentPageNumber }} / {{ products.pageCount }}
+        {% if products.currentPageNumber > 1 %}
+            <a href="?page={{ products.currentPageNumber - 1 }}">Previous</a>
         {% endif %}
-        <span class="pagination-current">Page {{ page }} of {{ totalPages }}</span>
-        {% if page < totalPages %}
-            <a href="{{ path('product_list', { page: page + 1, category: filters.category, minPrice: filters.minPrice, maxPrice: filters.maxPrice }) }}" class="pagination-link">Next</a>
+        {% if products.currentPageNumber < products.pageCount %}
+            <a href="?page={{ products.currentPageNumber + 1 }}">Next</a>
         {% endif %}
     </div>
 </div>

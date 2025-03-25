@@ -15,15 +15,22 @@ services:
         container_name: opensearch
         environment:
             - discovery.type=single-node
+            - cluster.name=opensearch-cluster
+            - node.name=opensearch
+            - discovery.seed_hosts=opensearch
             - bootstrap.memory_lock=true
             - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
-            - OPENSEARCH_INITIAL_ADMIN_PASSWORD=${OPENSEARCH_INITIAL_ADMIN_PASSWORD}
+            - "DISABLE_INSTALL_DEMO_CONFIG=true"
+            - "DISABLE_SECURITY_PLUGIN=true"
+        ulimits:
+            memlock:
+                soft: -1
+                hard: -1
+            nofile:
+                soft: 65536
+                hard: 65536
         ports:
             - "9200:9200"
-        networks:
-            default:
-                aliases:
-                    - localhost
 
     opensearch-dashboards:
         image: opensearchproject/opensearch-dashboards:latest
@@ -33,7 +40,9 @@ services:
         expose:
             - "5601"
         environment:
-            OPENSEARCH_HOSTS: '["https://opensearch:9200"]'
+            - 'OPENSEARCH_HOSTS=["http://opensearch:9200"]'
+            - "DISABLE_SECURITY_DASHBOARDS_PLUGIN=true"
+
 
     db:
         image: mariadb:10.11
@@ -77,9 +86,7 @@ services:
             PIMCORE_INSTALL_MYSQL_PORT: 3306
             PIMCORE_INSTALL_MYSQL_HOST_SOCKET: db
             PIMCORE_INSTALL_MYSQL_DATABASE: pimcore
-            OPENSEARCH_URL: "https://opensearch:9200"
-            OPENSEARCH_USERNAME: "admin"
-            OPENSEARCH_PASSWORD: "YouongPrStrassword123!"
+            OPENSEARCH_URL: "http://opensearch:9200"
             OPENSEARCH_SSL_VERIFICATIONMODE: "none"
         depends_on:
             db:

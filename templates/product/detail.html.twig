@@ -86,5 +86,37 @@
     </div>
 
     <a href="{{ path('product_list') }}" class="back-link">← Back to Products</a>
+
+    <div class="related-products">
+        <h2 class="section-title">Related Products</h2>
+        
+        {% if relatedProducts is defined and relatedProducts|length > 0 %}
+            <div class="product-grid">
+                {% for relatedProduct in relatedProducts %}
+                    <div class="product-card">
+                        <a href="{{ path('product_detail', { sku: relatedProduct.sku }) }}" class="product-link">
+                            {% if relatedProduct.categoryNames is defined and relatedProduct.categoryNames is not empty %}
+                                <div class="product-category-tag">
+                                    <p>{{ relatedProduct.categoryNames[0] }}</p>
+                                </div>
+                            {% endif %}
+                            <div class="product-image-small">
+                                {% if relatedProduct.programItem is defined and relatedProduct.programItem is not empty and relatedProduct.programItem[0].programImages %}
+                                    {% set imageAsset = pimcore_asset(relatedProduct.programItem[0].programImages.data.id) %}
+                                    <img src="{{ imageAsset.getThumbnail('default') }}" alt="{{ relatedProduct.name }}">
+                                {% endif %}
+                            </div>
+                            <div class="product-info">
+                                <h3>{{ relatedProduct.name }}</h3>
+                                <p class="product-price">${{ relatedProduct.price }}</p>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="no-related-products">No related products found.</p>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}

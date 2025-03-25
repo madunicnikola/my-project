@@ -6,6 +6,7 @@ services:
         autowire: true
         autoconfigure: true
         public: false
+    
     #
     # CONTROLLERS
     #
@@ -31,3 +32,11 @@ services:
     App\EventListener\SeoListener:
         tags:
             - { name: kernel.event_subscriber }
+
+    app.custom_filter_service:
+        class: Pimcore\Bundle\EcommerceFrameworkBundle\FilterService\FilterService
+        arguments:
+            - '@Pimcore\Bundle\EcommerceFrameworkBundle\FilterService\FilterGroupHelper'
+            - '@Pimcore\Bundle\EcommerceFrameworkBundle\FilterService\FilterType\NumberRange'
+            - '@Pimcore\Bundle\EcommerceFrameworkBundle\FilterService\FilterType\NumberRangeSelection'
+            - '@Pimcore\Bundle\EcommerceFrameworkBundle\FilterService\FilterType\Select'

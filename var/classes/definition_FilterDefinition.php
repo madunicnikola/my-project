@@ -2,7 +2,7 @@
 
 /**
  * Inheritance: yes
- * Variants: no
+ * Variants: yes
  *
  * Fields Summary:
  * - pageLimit [numeric]
@@ -29,9 +29,9 @@ return \Pimcore\Model\DataObject\ClassDefinition::__set_state(array(
    'title' => '',
    'description' => '',
    'creationDate' => NULL,
-   'modificationDate' => 1741853341,
+   'modificationDate' => 1742906879,
    'userOwner' => NULL,
-   'userModification' => 0,
+   'userModification' => 2,
    'parentClass' => '\\Pimcore\\Bundle\\EcommerceFrameworkBundle\\Model\\AbstractFilterDefinition',
    'implementsInterfaces' => '',
    'listingParentClass' => '',
@@ -42,8 +42,8 @@ return \Pimcore\Model\DataObject\ClassDefinition::__set_state(array(
   array (
   ),
    'allowInherit' => true,
-   'allowVariants' => false,
-   'showVariants' => false,
+   'allowVariants' => true,
+   'showVariants' => true,
    'layoutDefinitions' => 
   \Pimcore\Model\DataObject\ClassDefinition\Layout\Panel::__set_state(array(
      'name' => 'pimcore_root',
@@ -970,7 +970,7 @@ return \Pimcore\Model\DataObject\ClassDefinition::__set_state(array(
    'group' => 'E-Commerce',
    'showAppLoggerTab' => false,
    'linkGeneratorReference' => '',
-   'previewGeneratorReference' => NULL,
+   'previewGeneratorReference' => '',
    'compositeIndices' => 
   array (
   ),

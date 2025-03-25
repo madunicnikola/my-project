@@ -5,6 +5,7 @@
         <meta charset="UTF-8">
         <title>{% block title %}Modern Ecommerce{% endblock %}</title>
     {% endblock metadata %}
+    <link rel="stylesheet" href="{{ asset('static/css/globals.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -23,8 +24,8 @@
         nav a:hover::before, nav a:hover::after {width: 10px; height: 10px; border-color: #0a0a0a; color: #000000}
 
         header .language-selection { display: flex; flex-direction: column; align-items: center; }
-        header .language-selection button, .pagination-current button {appearance: none;background-color: #FAFBFC; border: 1px solid rgba(27, 31, 35, 0.15);border-radius: 6px; box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset; box-sizing: border-box;color: #24292E; cursor: pointer; display: inline-block; font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"; font-size: 14px; font-weight: 500; line-height: 20px; list-style: none; padding: 6px 16px; position: relative; transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1); user-select: none; -webkit-user-select: none; touch-action: manipulation; vertical-align: middle; white-space: nowrap; word-wrap: break-word;}
-        header .language-selection button:hover, .pagination-current button:hover { background-color: #F3F4F6; text-decoration: none; transition-duration: 0.1s; }
+        header .language-selection button, .pagination-current button, .form-button {appearance: none;background-color: #FAFBFC; border: 1px solid rgba(27, 31, 35, 0.15);border-radius: 6px; box-shadow: rgba(27, 31, 35, 0.04) 0 1px 0, rgba(255, 255, 255, 0.25) 0 1px 0 inset; box-sizing: border-box;color: #24292E; cursor: pointer; display: inline-block; font-family: -apple-system, system-ui, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"; font-size: 14px; font-weight: 500; line-height: 20px; list-style: none; padding: 6px 16px; position: relative; transition: background-color 0.2s cubic-bezier(0.3, 0, 0.5, 1); user-select: none; -webkit-user-select: none; touch-action: manipulation; vertical-align: middle; white-space: nowrap; word-wrap: break-word;}
+        header .language-selection button:hover, .pagination-current button:hover, .form-button:hover { background-color: #F3F4F6; text-decoration: none; transition-duration: 0.1s; }
         header .language-selection p {font-size: 12px;}
 
         main { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
@@ -38,17 +39,22 @@
         .filter-button { background: #000000; color: #ffffff; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; }
         .filter-button:hover { background: #141414; }
 
-        .product-list-container h1 {display: flex; align-items: center; justify-content: center;}
+        .product-list-container h1 { display: flex; align-items: center; justify-content: center; }
         .product-link { text-decoration: none; }
-        .product-category-tag {width: 30%; border-radius: 8px; border-bottom-left-radius: 0px; border-top-right-radius: 0px; padding: 3px; background: #000000; border: 2px solid transparent; }
-        .product-category-tag p {color: #C4D9FF; font-size: 12px; font-weight: bold; display: flex; align-items: center; justify-content: center;}
+        .product-category-tag { width: 30%; position: absolute; top: 0; left: 0; border-radius: 8px; border-bottom-left-radius: 0px; border-top-right-radius: 0px; padding: 3px; background: #000000; border: 2px solid transparent; }
+        .product-category-tag p { color: #C4D9FF; font-size: 12px; font-weight: bold; display: flex; align-items: center; justify-content: center; }
         .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
-        .product-card { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; transition: transform 0.2s; }
+        .product-card { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; transition: transform 0.2s; position: relative }
         .product-card:hover { transform: translateY(-5px); }
         .product-card img { width: 100%; height: 200px; object-fit: contain; }
         .product-info { padding: 15px; display: flex; flex-direction: column; place-content: center; align-items: center; }
-        .product-info h3 { font-size: 1.25rem; margin-bottom: 10px; color: #7886C7;}
+        .product-info h3 { font-size: 1.25rem; margin-bottom: 10px; color: #7886C7; }
         .product-price { font-size: 1.1rem; color: #27445D; font-weight: 600; }
+        .related-products { margin-top: 40px; padding-top: 30px; border-top: 1px solid #e5e7eb; }
+        .related-products h2.section-title { text-align: center; margin-bottom: 25px; font-size: 1.5rem; }
+        .related-products .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+        .related-products .product-card { position: relative; height: 100% }
+        .no-related-products { text-align: center; color: #6c757d; font-style: italic; padding: 20px; }
 
         .pagination { display: flex; justify-content: center; gap: 10px; margin-top: 20px; }
         .pagination-link { padding: 8px 12px; background: #e5e7eb; border-radius: 4px; text-decoration: none; color: #4b5563; }
@@ -58,6 +64,7 @@
         .product-detail { display: flex; gap: 40px; margin-bottom: 40px; }
         .product-gallery { flex: 1; }
         .product-gallery img { width: 100%; border-radius: 8px; object-fit: cover; }
+        .product-image-small img { width: 100%; height: 40%; }
         .product-content { flex: 1; }
         .product-title { font-size: 2rem; margin-bottom: 10px; display: flex; align-items: center; justify-content: center;}
         .product-price { font-size: 1.5rem; color: #27445D; margin-bottom: 20px; }
@@ -77,6 +84,62 @@
         .program-items-header {text-align: center; align-items: center; justify-content: center; display: flex;}
 
         footer { background: #ffffff; text-align: center; padding: 20px; margin-top: 40px; border-top: 1px solid #e5e7eb; }
+
+        .filter {
+        margin-bottom: 1.5rem;
+        }
+        .filter h6 {
+        font-size: 0.9rem;
+        color: #6c757d;
+        text-transform: uppercase;
+        margin-bottom: 0.5rem;
+        }
+        .filter ul.list-group {
+        padding-left: 0;
+        margin: 0;
+        list-style: none;
+        }
+        .filter ul.list-group li.list-group-item {
+        border: none;
+        border-bottom: 1px solid #e9ecef;
+        padding: 0.75rem 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: background-color 0.2s ease;
+        }
+        .filter ul.list-group li.list-group-item:last-child {
+        border-bottom: none;
+        }
+        .filter ul.list-group li.list-group-item:hover {
+        background-color: #f8f9fa;
+        }
+        .filter .custom-control {
+        margin-right: 0.5rem;
+        }
+        .filter .custom-control-input {
+        margin-top: 0.3rem;
+        }
+        .filter .custom-control-label {
+        margin-left: 0.5rem;
+        cursor: pointer;
+        }
+        .filter .badge.badge-primary.badge-pill {
+        font-size: 0.8rem;
+        padding: 0.25em 0.5em;
+        }
+        /* "Show more" link styling */
+        .filter a.hide-me {
+        display: block;
+        font-size: 0.85rem;
+        color: #007bff;
+        text-decoration: none;
+        margin-top: 0.5rem;
+        text-align: center;
+        }
+        .filter a.hide-me:hover {
+        text-decoration: underline;
+        }
     </style>
 </head>
 <body>

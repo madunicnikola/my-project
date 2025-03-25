@@ -1,0 +1,9 @@
+pimcore_open_search_client:
+    clients:
+        default:
+            hosts: ['http://opensearch:9200']
+            password: 'YouongPrStrassword123!'
+            username: 'admin'
+            logger_channel: 'pimcore.opensearch'
+            log_404_errors: true
+            ssl_verification: false
