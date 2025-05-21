@@ -95,7 +95,7 @@ class ProductController extends AbstractController
         $categoryNames = [];
         if (method_exists($product, 'getCategories') && $product->getCategories()) {
             foreach ($product->getCategories() as $category) {
-                $categoryNames[] = $category->getKey();
+                $categoryNames[] = strtolower($category->getKey());
             }
         }
                 

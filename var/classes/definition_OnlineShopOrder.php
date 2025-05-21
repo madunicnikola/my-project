@@ -52,7 +52,7 @@ return \Pimcore\Model\DataObject\ClassDefinition::__set_state(array(
    'title' => '',
    'description' => '',
    'creationDate' => NULL,
-   'modificationDate' => 1741853344,
+   'modificationDate' => 1743009681,
    'userOwner' => NULL,
    'userModification' => 0,
    'parentClass' => '\\Pimcore\\Bundle\\EcommerceFrameworkBundle\\Model\\AbstractOrder',
@@ -1435,6 +1435,10 @@ return \Pimcore\Model\DataObject\ClassDefinition::__set_state(array(
                 ),
                  'allowedTypes' => 
                 array (
+                  0 => 'PaymentProviderDatatrans',
+                  1 => 'PaymentProviderOGone',
+                  2 => 'PaymentProviderMpay24',
+                  3 => 'PaymentProviderHobex',
                 ),
                  'maxItems' => NULL,
                  'border' => false,

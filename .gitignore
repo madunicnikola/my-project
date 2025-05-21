@@ -29,6 +29,10 @@
 /var/config/tag-manager.php
 /var/config/reports.php
 
+*/cache/*
+/cache/
+/cache
+cache/
 
 /public/var/
 /public/sitemap*.xml
@@ -47,3 +51,4 @@ nbproject
 
 # temp
 .temp
+*/~dev.json

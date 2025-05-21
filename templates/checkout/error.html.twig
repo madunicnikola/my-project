@@ -1,0 +1,19 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3 mt-5">
+            <div class="alert alert-danger" role="alert">
+                <h2>Payment Error</h2>
+                <p>{{ errorMessage }}</p>
+                
+                <div class="mt-3">
+                    <a href="{{ path('cart') }}" class="btn btn-primary">Back to Cart</a>
+                    <a href="{{ path('checkout') }}" class="btn btn-secondary">Retry Checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

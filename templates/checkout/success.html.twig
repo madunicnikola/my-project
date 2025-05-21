@@ -1,0 +1,15 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+<div class="product-detail-container" style="max-width: 800px; margin: 30px auto; text-align: center;">
+    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin: 0 auto 20px auto; color: #10b981;">
+        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" fill="currentColor"/>
+    </svg>
+    
+    <h1 style="margin-bottom: 20px;">Order Completed!</h1>
+    
+    <p style="margin-bottom: 30px; color: #4b5563;">Thank you for your order. A confirmation email will be sent to your email address.</p>
+    
+    <a href="{{ path('product_list') }}" class="add-cart-button" style="display: inline-block; text-decoration: none;">Continue Shopping</a>
+</div>
+{% endblock %}

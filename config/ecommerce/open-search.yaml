@@ -107,3 +107,124 @@ pimcore_ecommerce_framework:
                     FilterRelation:
                         filter_type_id: Pimcore\Bundle\EcommerceFrameworkBundle\FilterService\FilterType\SearchIndex\SelectRelation
                         template: 'product/filters/object_relation.html.twig'
+
+    cart_manager:
+        tenants:
+            _defaults:
+                cart_manager_id: Pimcore\Bundle\EcommerceFrameworkBundle\CartManager\MultiCartManager
+
+                cart:
+                    factory_id: Pimcore\Bundle\EcommerceFrameworkBundle\CartManager\CartFactory
+                    
+                    factory_options:
+                        cart_class_name: Pimcore\Bundle\EcommerceFrameworkBundle\CartManager\Cart
+                        guest_cart_class_name: Pimcore\Bundle\EcommerceFrameworkBundle\CartManager\SessionCart
+        
+            default:   
+                price_calculator:
+                    modificators:
+                        shipping:
+                            class: Pimcore\Bundle\EcommerceFrameworkBundle\CartManager\CartPriceModificator\Shipping
+                            options:
+                                charge: "5.90"
+
+            noShipping: ~
+
+    price_systems:
+        default:
+            id: Pimcore\Bundle\EcommerceFrameworkBundle\PriceSystem\AttributePriceSystem
+
+    availability_systems:
+        default:
+            id: Pimcore\Bundle\EcommerceFrameworkBundle\AvailabilitySystem\AvailabilitySystem
+
+    checkout_manager:
+        tenants:
+            _defaults:
+                factory_id: Pimcore\Bundle\EcommerceFrameworkBundle\CheckoutManager\CheckoutManagerFactory
+
+                factory_options:
+                    class: \Pimcore\Bundle\EcommerceFrameworkBundle\CheckoutManager\V7\CheckoutManager
+                    handle_pending_payments_strategy: Pimcore\Bundle\EcommerceFrameworkBundle\CheckoutManager\V7\HandlePendingPayments\CancelPaymentOrRecreateOrderStrategy
+
+                commit_order_processor:
+                    id: Pimcore\Bundle\EcommerceFrameworkBundle\CheckoutManager\V7\CommitOrderProcessor
+                    
+                    options:
+                        confirmation_mail: /en/emails/order-confirmation
+                
+                steps:
+                    deliveryaddress:
+                        class: \App\CheckoutManager\DeliveryAddress
+                        
+                    confirm:
+                        class: \App\Ecommerce\Checkout\Confirm
+
+    payment_manager:
+        payment_manager_id: Pimcore\Bundle\EcommerceFrameworkBundle\PaymentManager\PaymentManager
+
+        providers:
+            datatrans:
+                provider_id: Pimcore\Bundle\EcommerceFrameworkBundle\PaymentManager\Payment\Datatrans
+
+                profile: sandbox
+
+                profiles:
+                    sandbox:
+                        merchant_id: 1000011011
+                        sign: 30916165706580013
+                        use_digital_signature: false
+                    live:
+                        merchant_id: merchant_id_id
+                        sign: sign_id
+                        use_digital_signature: false
+                        mode: live
+
+            ogone:
+                provider_id: Pimcore\Bundle\EcommerceFrameworkBundle\PaymentManager\Payment\OGone
+                profile: sandbox
+                profiles:
+                    sandbox:
+                        secretIn: D343DDFD3434
+                        secretOut: D343DDFD3434
+                        pspid: MyTestAccount
+                        mode: sandbox
+                    live:
+                        secretIn: D343DDFD3434
+                        secretOut: D343DDFD3434
+                        pspid: MyLiveAccount
+                        mode: live                       
+            mpay24:
+                provider_id: Pimcore\Bundle\EcommerceFrameworkBundle\PaymentManager\Payment\Mpay24Seamless
+                profile: testsystem
+                profiles:
+                  _defaults:
+                      partial: Shared/Includes/Shop/Payment/paymentMethods.html.php
+                      payment_methods:
+                          cc:
+                          paypal:
+                          sofort:
+                          invoice:
+                  testsystem:
+                      merchant_id: 95387
+                      password: 7&jcQ%v6RB
+                      testSystem: true
+                      debugMode: true
+                  live:
+                      merchant_id: todo
+                      password: todo
+                      testSystem: false
+                      debugMode: false                  
+            hobex:
+                    provider_id: Pimcore\Bundle\EcommerceFrameworkBundle\PaymentManager\Payment\Hobex                    
+                    profile: sandbox
+                    profiles:
+                        sandbox:
+                            entityId: '8a829418530df1d201531299e097175c'
+                            authorizationBearer: 'OGE4Mjk0MTg1MzBkZjFkMjAxNTMxMjk5ZTJjMTE3YWF8ZzJnU3BnS2hLUw=='
+                            testSystem: true
+                            payment_methods:
+                                - VISA
+                                - MASTER
+                                - SOFORTUEBERWEISUNG
+                                - SEPA     

@@ -1,0 +1,54 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+<div class="product-detail-container" style="max-width: 800px; margin: 30px auto;">
+    <h1 style="text-align: center; margin-bottom: 30px;">Delivery Address</h1>
+    
+    <form method="post" style="display: flex; flex-direction: column; gap: 15px;">
+        <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+            <div style="flex: 1; min-width: 200px;">
+                <label for="firstname" style="display: block; margin-bottom: 5px;">First Name</label>
+                <input type="text" id="firstname" name="firstname" value="{{ address.firstname|default('') }}" required style="width: 100%; padding: 8px; border: 1px solid #e5e7eb; border-radius: 4px;">
+            </div>
+            <div style="flex: 1; min-width: 200px;">
+                <label for="lastname" style="display: block; margin-bottom: 5px;">Last Name</label>
+                <input type="text" id="lastname" name="lastname" value="{{ address.lastname|default('') }}" required style="width: 100%; padding: 8px; border: 1px solid #e5e7eb; border-radius: 4px;">
+            </div>
+        </div>
+        
+        <div>
+            <label for="street" style="display: block; margin-bottom: 5px;">Street</label>
+            <input type="text" id="street" name="street" value="{{ address.street|default('') }}" required style="width: 100%; padding: 8px; border: 1px solid #e5e7eb; border-radius: 4px;">
+        </div>
+        
+        <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+            <div style="flex: 1; min-width: 100px;">
+                <label for="zip" style="display: block; margin-bottom: 5px;">ZIP Code</label>
+                <input type="text" id="zip" name="zip" value="{{ address.zip|default('') }}" required style="width: 100%; padding: 8px; border: 1px solid #e5e7eb; border-radius: 4px;">
+            </div>
+            <div style="flex: 2; min-width: 200px;">
+                <label for="city" style="display: block; margin-bottom: 5px;">City</label>
+                <input type="text" id="city" name="city" value="{{ address.city|default('') }}" required style="width: 100%; padding: 8px; border: 1px solid #e5e7eb; border-radius: 4px;">
+            </div>
+        </div>
+        
+        <div>
+            <label for="country" style="display: block; margin-bottom: 5px;">Country</label>
+            <select id="country" name="country" required style="width: 100%; padding: 8px; border: 1px solid #e5e7eb; border-radius: 4px;">
+                <option value="BA" {% if address.country|default('') == 'BA' %}selected{% endif %}>Bosnia and Herzegovina</option>
+                <option value="DE" {% if address.country|default('') == 'DE' %}selected{% endif %}>Germany</option>
+                <option value="CH" {% if address.country|default('') == 'CH' %}selected{% endif %}>Switzerland</option>
+            </select>
+        </div>
+        
+        <button type="submit" class="add-cart-button" style="margin-top: 20px;">Continue to Confirmation</button>
+    </form>
+    
+    <a href="{{ path('checkout') }}" class="back-link" style="display: inline-flex; align-items: center; gap: 8px; margin: 10px 0; color: #4b5563; text-decoration: none; font-weight: 500; transition: color 0.2s;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" fill="currentColor"/>
+        </svg>
+        Back to Checkout
+    </a>
+</div>
+{% endblock %}

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "117bb8dfca074c424c17e643bb683e31",
+    "content-hash": "23527f07dfdde13c0b31058bcf9db3ac",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -4656,6 +4656,42 @@
             "time": "2024-12-05T17:15:07+00:00"
         },
         {
+            "name": "mpay24/mpay24-php",
+            "version": "4.3.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mpay24/mpay24-php.git",
+                "reference": "47df0ccc97d4c977d374c0d9aa940e645e1aae41"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mpay24/mpay24-php/zipball/47df0ccc97d4c977d374c0d9aa940e645e1aae41",
+                "reference": "47df0ccc97d4c977d374c0d9aa940e645e1aae41",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-dom": "*",
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Mpay24\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Offical PHP SDK for SOAP Bindings",
+            "support": {
+                "issues": "https://github.com/mpay24/mpay24-php/issues",
+                "source": "https://github.com/mpay24/mpay24-php/tree/4.3.3"
+            },
+            "time": "2020-06-15T10:29:57+00:00"
+        },
+        {
             "name": "mpratt/embera",
             "version": "2.0.42",
             "source": {
@@ -5887,6 +5923,194 @@
                 "source": "https://github.com/pimcore/opensearch-client/tree/v1.1.0"
             },
             "time": "2024-12-02T10:24:23+00:00"
+        },
+        {
+            "name": "pimcore/payment-provider-datatrans",
+            "version": "2.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pimcore/payment-provider-datatrans.git",
+                "reference": "9cd07da55994907b9b54e420f74028108d02b8e9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pimcore/payment-provider-datatrans/zipball/9cd07da55994907b9b54e420f74028108d02b8e9",
+                "reference": "9cd07da55994907b9b54e420f74028108d02b8e9",
+                "shasum": ""
+            },
+            "require": {
+                "pimcore/ecommerce-framework-bundle": "^1.1",
+                "pimcore/pimcore": "^11.0"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^1.9"
+            },
+            "default-branch": true,
+            "type": "pimcore-bundle",
+            "extra": {
+                "pimcore": {
+                    "bundles": [
+                        "Pimcore\\Bundle\\EcommerceFrameworkBundle\\PimcorePaymentProviderDatatransBundle"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Pimcore\\Bundle\\EcommerceFrameworkBundle\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0+"
+            ],
+            "description": "Pimcore Payment Provider - Datatrans",
+            "support": {
+                "issues": "https://github.com/pimcore/payment-provider-datatrans/issues",
+                "source": "https://github.com/pimcore/payment-provider-datatrans/tree/2.x"
+            },
+            "time": "2024-07-31T15:07:32+00:00"
+        },
+        {
+            "name": "pimcore/payment-provider-hobex",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pimcore/payment-provider-hobex.git",
+                "reference": "312eb22dae57e2dd0754a51a74dc5b3af7dd4eeb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pimcore/payment-provider-hobex/zipball/312eb22dae57e2dd0754a51a74dc5b3af7dd4eeb",
+                "reference": "312eb22dae57e2dd0754a51a74dc5b3af7dd4eeb",
+                "shasum": ""
+            },
+            "require": {
+                "pimcore/ecommerce-framework-bundle": "^1.0",
+                "pimcore/pimcore": "^11.0"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^1.9"
+            },
+            "type": "pimcore-bundle",
+            "extra": {
+                "pimcore": {
+                    "bundles": [
+                        "Pimcore\\Bundle\\EcommerceFrameworkBundle\\PimcorePaymentProviderHobexBundle"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Pimcore\\Bundle\\EcommerceFrameworkBundle\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0+"
+            ],
+            "description": "Pimcore Payment Provider - Hobex",
+            "support": {
+                "issues": "https://github.com/pimcore/payment-provider-hobex/issues",
+                "source": "https://github.com/pimcore/payment-provider-hobex/tree/v2.0.0"
+            },
+            "time": "2024-04-29T11:44:32+00:00"
+        },
+        {
+            "name": "pimcore/payment-provider-mpay24-seamless",
+            "version": "2.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pimcore/payment-provider-mpay24-seamless.git",
+                "reference": "d48dd463e5eac100b6550af3c37eaf841265730c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pimcore/payment-provider-mpay24-seamless/zipball/d48dd463e5eac100b6550af3c37eaf841265730c",
+                "reference": "d48dd463e5eac100b6550af3c37eaf841265730c",
+                "shasum": ""
+            },
+            "require": {
+                "mpay24/mpay24-php": "^4.2",
+                "pimcore/ecommerce-framework-bundle": "^1.0",
+                "pimcore/pimcore": "^11.2"
+            },
+            "conflict": {
+                "pimcore/pimcore": "v11.0.0-ALPHA1 || v11.0.0-ALPHA2"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^1.10.5"
+            },
+            "default-branch": true,
+            "type": "pimcore-bundle",
+            "extra": {
+                "pimcore": {
+                    "bundles": [
+                        "Pimcore\\Bundle\\EcommerceFrameworkBundle\\PimcorePaymentProviderMpay24SeamlessBundle"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Pimcore\\Bundle\\EcommerceFrameworkBundle\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0+"
+            ],
+            "description": "Pimcore Payment Provider - MPay24 Seamless",
+            "support": {
+                "issues": "https://github.com/pimcore/payment-provider-mpay24-seamless/issues",
+                "source": "https://github.com/pimcore/payment-provider-mpay24-seamless/tree/2.x"
+            },
+            "time": "2024-08-27T11:54:47+00:00"
+        },
+        {
+            "name": "pimcore/payment-provider-ogone",
+            "version": "2.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pimcore/payment-provider-ogone.git",
+                "reference": "604a22f269bca34e8da308b6966d2fc57a641869"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pimcore/payment-provider-ogone/zipball/604a22f269bca34e8da308b6966d2fc57a641869",
+                "reference": "604a22f269bca34e8da308b6966d2fc57a641869",
+                "shasum": ""
+            },
+            "require": {
+                "pimcore/ecommerce-framework-bundle": "^1.0.0",
+                "pimcore/pimcore": "^11.0",
+                "symfony/intl": "^6.1"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^1.9"
+            },
+            "default-branch": true,
+            "type": "pimcore-bundle",
+            "extra": {
+                "pimcore": {
+                    "bundles": [
+                        "Pimcore\\Bundle\\EcommerceFrameworkBundle\\PimcorePaymentProviderOGoneBundle"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Pimcore\\Bundle\\EcommerceFrameworkBundle\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0+"
+            ],
+            "description": "Pimcore Payment Provider - OGone",
+            "support": {
+                "issues": "https://github.com/pimcore/payment-provider-ogone/issues",
+                "source": "https://github.com/pimcore/payment-provider-ogone/tree/2.x"
+            },
+            "time": "2024-04-19T10:26:59+00:00"
         },
         {
             "name": "pimcore/personalization-bundle",
@@ -9743,6 +9967,89 @@
             "time": "2025-02-26T10:51:37+00:00"
         },
         {
+            "name": "symfony/intl",
+            "version": "v6.4.15",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/intl.git",
+                "reference": "b1d5e8d82615b60f229216edfee0b59e2ef66da6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/intl/zipball/b1d5e8d82615b60f229216edfee0b59e2ef66da6",
+                "reference": "b1d5e8d82615b60f229216edfee0b59e2ef66da6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "symfony/filesystem": "^5.4|^6.0|^7.0",
+                "symfony/finder": "^5.4|^6.0|^7.0",
+                "symfony/var-exporter": "^5.4|^6.0|^7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Intl\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/",
+                    "/Resources/data/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bernhard Schussek",
+                    "email": "bschussek@gmail.com"
+                },
+                {
+                    "name": "Eriksen Costa",
+                    "email": "eriksen.costa@infranology.com.br"
+                },
+                {
+                    "name": "Igor Wiedler",
+                    "email": "igor@wiedler.ch"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Provides access to the localization data of the ICU library",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "i18n",
+                "icu",
+                "internationalization",
+                "intl",
+                "l10n",
+                "localization"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/intl/tree/v6.4.15"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2024-11-08T15:28:48+00:00"
+        },
+        {
             "name": "symfony/lock",
             "version": "v6.4.13",
             "source": {
@@ -13419,6 +13726,70 @@
             "time": "2025-02-08T09:47:15+00:00"
         },
         {
+            "name": "twig/intl-extra",
+            "version": "v3.20.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/twigphp/intl-extra.git",
+                "reference": "05bc5d46b9df9e62399eae53e7c0b0633298b146"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/twigphp/intl-extra/zipball/05bc5d46b9df9e62399eae53e7c0b0633298b146",
+                "reference": "05bc5d46b9df9e62399eae53e7c0b0633298b146",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1.0",
+                "symfony/intl": "^5.4|^6.4|^7.0",
+                "twig/twig": "^3.13|^4.0"
+            },
+            "require-dev": {
+                "symfony/phpunit-bridge": "^6.4|^7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Twig\\Extra\\Intl\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
+                }
+            ],
+            "description": "A Twig extension for Intl",
+            "homepage": "https://twig.symfony.com",
+            "keywords": [
+                "intl",
+                "twig"
+            ],
+            "support": {
+                "source": "https://github.com/twigphp/intl-extra/tree/v3.20.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/twig/twig",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2025-01-31T20:45:36+00:00"
+        },
+        {
             "name": "twig/string-extra",
             "version": "v3.20.0",
             "source": {
@@ -15976,11 +16347,13 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
-    "stability-flags": [],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "pimcore/payment-provider-mpay24-seamless": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
-    "platform": [],
-    "platform-dev": [],
+    "platform": {},
+    "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }

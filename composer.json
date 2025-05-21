@@ -12,6 +12,7 @@
     }
   },
   "prefer-stable": true,
+  "minimum-stability": "dev",
   "require": {
     "dachcom-digital/seo": "^3.2",
     "doctrine/dbal": "^3.9",
@@ -20,12 +21,17 @@
     "pimcore/admin-ui-classic-bundle": "*",
     "pimcore/ecommerce-framework-bundle": "^1.3",
     "pimcore/opensearch-client": "*",
+    "pimcore/payment-provider-datatrans": "^2.0",
+    "pimcore/payment-provider-hobex": "^2.0",
+    "pimcore/payment-provider-mpay24-seamless": "2.x-dev",
+    "pimcore/payment-provider-ogone": "*",
     "pimcore/pimcore": "*",
     "pimcore/platform-version": "^2024.4",
     "pimcore/quill-bundle": "*",
     "symfony/amqp-messenger": "^6.2",
     "symfony/dotenv": "^6.2",
-    "symfony/runtime": "^6.2"
+    "symfony/runtime": "^6.2",
+    "twig/intl-extra": "^3.20"
   },
   "require-dev": {
     "codeception/codeception": "^5.0.3",

@@ -40,3 +40,18 @@ services:
             - '@Pimcore\Bundle\EcommerceFrameworkBundle\FilterService\FilterType\NumberRange'
             - '@Pimcore\Bundle\EcommerceFrameworkBundle\FilterService\FilterType\NumberRangeSelection'
             - '@Pimcore\Bundle\EcommerceFrameworkBundle\FilterService\FilterType\Select'
+
+    App\Ecommerce\PriceSystem\CustomPriceSystem:
+        arguments:
+            - 'bar'
+
+    app.custom_attribute_price_system:
+        class: Pimcore\Bundle\EcommerceFrameworkBundle\PriceSystem\AttributePriceSystem
+        arguments:
+            $options:
+                attribute_name: customPriceField
+
+    Pimcore\Bundle\EcommerceFrameworkBundle\AvailabilitySystem\AvailabilitySystem: ~
+
+    App\Service\CartService:
+        public: true
